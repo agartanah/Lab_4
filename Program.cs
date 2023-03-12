@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Lab_4 {
   class Program {
     static void Main(string[] args) {
-      string Path = @"C:\Users\vyati\source\repos\Lab4\temp.txt";
+      string Path = @"C:\Users\vyati\source\repos\Lab_4\temp.txt";
 
       FileStream FileUser = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
@@ -19,16 +19,16 @@ namespace Lab_4 {
 
       Console.WriteLine(Filek.FileUserContent);
 
-      FileStream BinaryFile = new FileStream(@"C:\Users\vyati\source\repos\Lab4\tempb.bin",
+      FileStream BinaryFile = new FileStream(@"C:\Users\vyati\source\repos\Lab_4\tempb.bin",
         FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
       Filek.BinarySerialize(BinaryFile);
 
       BinaryFile.Close();
 
-      Filek = new ClassFile(@"C:\Users\vyati\source\repos\Lab4\temp2.txt");
+      Filek = new ClassFile(@"C:\Users\vyati\source\repos\Lab_4\temp2.txt");
 
-      BinaryFile = new FileStream(@"C:\Users\vyati\source\repos\Lab4\tempb.bin",
+      BinaryFile = new FileStream(@"C:\Users\vyati\source\repos\Lab_4\tempb.bin",
         FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
       Console.WriteLine(Filek.FileUserContent);
@@ -37,7 +37,7 @@ namespace Lab_4 {
 
       Console.WriteLine(Filek.FileUserContent);
 
-      FileStream XmlFile = new FileStream(@"C:\Users\vyati\source\repos\Lab4\tempb.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+      FileStream XmlFile = new FileStream(@"C:\Users\vyati\source\repos\Lab_4\tempb.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
       Filek.XMLSerialization(XmlFile);
 
