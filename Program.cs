@@ -10,14 +10,10 @@ using System.Threading.Tasks;
 namespace Lab_4 {
   class Program {
     static void Main(string[] args) {
+      Console.Write("Введите полный путь к текстовому файлу: ");
+      string FileTXTPath = Console.ReadLine();
 
-      List<string> ListFiles;
-
-      ListFiles = SearchFiles.FilesKeyWordSearch(@"C:\Users\vyati\source\repos\Lab_4\", "alone");
-
-      foreach (var ListElement in ListFiles) {
-        Console.WriteLine(ListElement);
-      }
+      TextFileEditor.EditorMenu(FileTXTPath);
 
       //MyFile.BinarySerialize(FileF);
       //FileStream fs = new

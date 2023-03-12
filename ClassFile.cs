@@ -55,7 +55,7 @@ namespace Lab_4 {
       FileBinary.Close();
     }
 
-    public void XMLSerialization(FileStream FileXml) {
+    public void XMLSerialize(FileStream FileXml) {
       XmlSerializer Xml = new XmlSerializer(this.GetType());
 
       Xml.Serialize(FileXml, this);
@@ -63,7 +63,7 @@ namespace Lab_4 {
       FileXml.Close();
     }
 
-    public void XMLDeserialization(FileStream FileXml) {
+    public void XMLDeserialize(FileStream FileXml) {
       XmlSerializer Xml = new XmlSerializer(typeof(ClassFile));
       ClassFile DeserializedFile = (ClassFile)Xml.Deserialize(FileXml);
 
