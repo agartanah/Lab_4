@@ -6,41 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Lab_4 {
-  class TextFileEditor : ClassFile, IOriginator {
-
-    class PatternMemento {
-      public string FileUserContent { get; set; }
-    }
-
-    public class Caretaker {
-      private object Memento;
-      public void SaveState(IOriginator Originator) {
-        Originator.SetMemento(Memento);
-      }
-
-      public void RestoreState(IOriginator Originator) {
-        Memento = Originator.GetMemento();
-      }
-    }
-
-    object IOriginator.GetMemento() {
-      return new PatternMemento { FileUserContent = this.FileUserContent };
-    }
-
-    void IOriginator.SetMemento(object memento) {
-      if (memento is PatternMemento) {
-        var mem = memento as PatternMemento;
-        FileUserContent = mem.FileUserContent;
-      }
-    }
-
-    static Caretaker CT = new Caretaker();
-    static ClassFile CF = new ClassFile();
+  class TextFileEditor : ClassFile {
 
     public static void EditorMenu(string FilePath) {
       Console.WriteLine("Что сделать с файлом:\n1. Сериализовать/Десериализовать\n2. Вписать текст\n" +
-        "3. Поиск файлов в директории по ключевым словам\n4. Сохранить изменения файла\n" +
-        "5. Откатить изменения в файле\nВыберите нужный пункт: ");
+        "3. Поиск файлов в директории по ключевым словам\n4. Откатить изменения в файле\nВыберите нужный пункт: ");
       int UserChoice = int.Parse(Console.ReadLine());
 
       ClassFile FileTXT = new ClassFile(FilePath);
@@ -59,23 +29,22 @@ namespace Lab_4 {
             case 1:
               FileTXT.BinarySerialize(FileDeserSer);
 
-              EditorMenu(FilePath);
               break;
             case 2:
               FileTXT.BinaryDeserialize(FileDeserSer);
 
-              EditorMenu(FilePath);
               break;
             case 3:
               FileTXT.XMLSerialize(FileDeserSer);
+
               break;
             case 4:
               FileTXT.XMLDeserialize(FileDeserSer);
 
-              EditorMenu(FilePath);
               break;
             default:
               Console.WriteLine("Нет такого пункта! Попробуйте ещё раз!");
+
               break;
             }
 
@@ -87,8 +56,13 @@ namespace Lab_4 {
           Console.WriteLine("Ваш текст, который нужно вписать:");
           string UserText = Console.ReadLine();
 
+          Caretaker CT = new Caretaker();
+          CT.SaveState(FileTXT);
+
           SW.WriteLine(UserText);
           SW.Close();
+
+          Console.WriteLine("Изменения сохранены!");
 
           EditorMenu(FilePath);
           break;
@@ -108,13 +82,21 @@ namespace Lab_4 {
           EditorMenu(FilePath);
           break;
         case 4:
-          CT.SaveState(CF);
+          Console.WriteLine("Вы уверены что хотите откатить изменения? Ответье ДА или НЕТ");
+          string UserAnswer = Console.ReadLine();
+          CT = new Caretaker();
 
-          break;
-        case 5:
+          if (UserAnswer.ToLower() == "да") {
+            CT.RestoreState(FileTXT);
+            FileTXT.FileEnterData(FilePath);
+            Console.WriteLine("Изменения откатились!");
+          }
+
+          EditorMenu(FilePath);
           break;
         default:
           Console.WriteLine("Такого пункта не существует! Попробуйте снова!");
+
           EditorMenu(FilePath);
           break;
       }

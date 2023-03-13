@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Lab_4 {
 
   [Serializable]
-  public class ClassFile {
+  public class ClassFile : IOriginator {
     public string FileUserContent { get; set; }
 
     public ClassFile() {
@@ -40,8 +40,44 @@ namespace Lab_4 {
       FileUser.Close();
     }
 
+    class PatternMemento {
+      public string FileUserContent { get; set; }
+    }
+
+    public class Caretaker {
+      private object Memento;
+      public void SaveState(IOriginator Originator) {
+        Originator.SetMemento(Memento);
+      }
+
+      public void RestoreState(IOriginator Originator) {
+        Memento = Originator.GetMemento();
+      }
+    }
+
+    object IOriginator.GetMemento() {
+      Console.WriteLine($"Текст файла {this.FileUserContent}");
+      return new PatternMemento { FileUserContent = this.FileUserContent };
+    }
+
+    void IOriginator.SetMemento(object memento) {
+      if (memento is PatternMemento) {
+        var mem = memento as PatternMemento;
+
+        FileUserContent = mem.FileUserContent;
+      }
+    }
+
+    public void FileEnterData(string FilePath) {
+      StreamWriter SW = new StreamWriter(FilePath);
+
+      SW.WriteLine(FileUserContent);
+
+      SW.Close();
+    }
     public void BinarySerialize(FileStream FileBinary) {
       BinaryFormatter Binary = new BinaryFormatter();
+
       Binary.Serialize(FileBinary, this);
       FileBinary.Flush();
       FileBinary.Close();
