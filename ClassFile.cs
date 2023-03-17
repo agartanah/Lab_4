@@ -1,12 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lab_4 {
 
@@ -27,24 +22,18 @@ namespace Lab_4 {
     }
 
     object IOriginator.GetMemento() {
-      Console.WriteLine($"Текст файла 1 {FileUserContent}");
       return new PatternMemento { FileUserContent = this.FileUserContent };
     }
 
     void IOriginator.SetMemento(object memento) {
-      Console.WriteLine("Flag\n");
-
       var mem = memento as PatternMemento;
-
       FileUserContent = mem.FileUserContent;
-      Console.WriteLine($"Текст файла 2 {FileUserContent}");
     }
 
     public void FileEnterData(string FilePath) {
       StreamWriter SW = new StreamWriter(FilePath);
 
       SW.WriteLine(FileUserContent);
-
       SW.Close();
     }
     public void BinarySerialize(FileStream FileBinary) {
@@ -60,6 +49,7 @@ namespace Lab_4 {
       ClassFile DeserializedFile = (ClassFile)BinaryFile.Deserialize(FileBinary);
 
       FileUserContent = DeserializedFile.FileUserContent;
+
       FileBinary.Close();
     }
 
@@ -76,6 +66,7 @@ namespace Lab_4 {
       ClassFile DeserializedFile = (ClassFile)Xml.Deserialize(FileXml);
 
       FileUserContent = DeserializedFile.FileUserContent;
+
       FileXml.Close();
     }
   }

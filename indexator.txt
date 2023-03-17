@@ -1,0 +1,3 @@
+Файлы .txt c текстом Hello
+	1. \temp.txt
+	2. \text.txt
