@@ -7,13 +7,27 @@ using System.Threading.Tasks;
 
 namespace Lab_4 {
   class TextFileEditor : ClassFile {
+    public static string ReadFile(string Path) {
+      string Text = string.Empty;
+
+      StreamReader SR = new StreamReader(Path);
+      Text = SR.ReadToEnd();
+      SR.Close();
+
+      return Text;
+    }
+
+    static ClassFile FileTXT = new ClassFile();
+    static Caretaker CT = new Caretaker();
 
     public static void EditorMenu(string FilePath) {
-      Console.WriteLine("Что сделать с файлом:\n1. Сериализовать/Десериализовать\n2. Вписать текст\n" +
+      Console.Write("Что сделать с файлом:\n1. Сериализовать/Десериализовать\n2. Вписать текст\n" +
         "3. Поиск файлов в директории по ключевым словам\n4. Откатить изменения в файле\nВыберите нужный пункт: ");
       int UserChoice = int.Parse(Console.ReadLine());
 
-      ClassFile FileTXT = new ClassFile(FilePath);
+      string Text = ReadFile(FilePath);
+
+      FileTXT.FileUserContent = Text;
 
       switch (UserChoice) {
         case 1:
@@ -56,7 +70,6 @@ namespace Lab_4 {
           Console.WriteLine("Ваш текст, который нужно вписать:");
           string UserText = Console.ReadLine();
 
-          Caretaker CT = new Caretaker();
           CT.SaveState(FileTXT);
 
           SW.WriteLine(UserText);
@@ -84,7 +97,6 @@ namespace Lab_4 {
         case 4:
           Console.WriteLine("Вы уверены что хотите откатить изменения? Ответье ДА или НЕТ");
           string UserAnswer = Console.ReadLine();
-          CT = new Caretaker();
 
           if (UserAnswer.ToLower() == "да") {
             CT.RestoreState(FileTXT);

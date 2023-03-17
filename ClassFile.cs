@@ -15,57 +15,29 @@ namespace Lab_4 {
     public string FileUserContent { get; set; }
 
     public ClassFile() {
-      FileUserContent = default;
+      FileUserContent = "";
     }
 
-    public ClassFile(FileStream FileUser) {
-      StreamReader SR = new StreamReader(FileUser);
+    public ClassFile(string Text) {
+      FileUserContent = Text;
 
-      while (SR.EndOfStream != true) {
-        FileUserContent += SR.ReadLine() + "\n";
-      }
-
-      SR.Close();
-    }
-
-    public ClassFile(string Path) {
-      FileStream FileUser = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-      StreamReader SR = new StreamReader(FileUser);
-
-      while (SR.EndOfStream != true) {
-        FileUserContent += SR.ReadLine() + "\n";
-      }
-
-      SR.Close();
-      FileUser.Close();
-    }
-
-    class PatternMemento {
-      public string FileUserContent { get; set; }
-    }
-
-    public class Caretaker {
-      private object Memento;
-      public void SaveState(IOriginator Originator) {
-        Originator.SetMemento(Memento);
-      }
-
-      public void RestoreState(IOriginator Originator) {
-        Memento = Originator.GetMemento();
+      if (FileUserContent == null) {
+        FileUserContent = "";
       }
     }
 
     object IOriginator.GetMemento() {
-      Console.WriteLine($"Текст файла {this.FileUserContent}");
+      Console.WriteLine($"Текст файла 1 {FileUserContent}");
       return new PatternMemento { FileUserContent = this.FileUserContent };
     }
 
     void IOriginator.SetMemento(object memento) {
-      if (memento is PatternMemento) {
-        var mem = memento as PatternMemento;
+      Console.WriteLine("Flag\n");
 
-        FileUserContent = mem.FileUserContent;
-      }
+      var mem = memento as PatternMemento;
+
+      FileUserContent = mem.FileUserContent;
+      Console.WriteLine($"Текст файла 2 {FileUserContent}");
     }
 
     public void FileEnterData(string FilePath) {
